@@ -1,9 +1,10 @@
-from typing import List, Set, Dict, Tuple, get_origin, get_args
+from typing import Dict, List, Set, Tuple, get_args, get_origin
 
 # from hypothesis.strategies._internal.lazy import LazyStrategy
 from hypothesis.strategies import (
-    booleans,
     binary,
+    booleans,
+    characters,
     complex_numbers,
     dictionaries,
     floats,
@@ -11,10 +12,8 @@ from hypothesis.strategies import (
     integers,
     lists,
     sets,
-    characters,
     tuples,
 )
-
 
 BUILTIN_TYPE_TO_TYPING_EQUIVALENT = {list: List, set: Set, dict: Dict, tuple: Tuple}
 

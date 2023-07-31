@@ -1,7 +1,6 @@
-from typing import Dict, List, Set, Tuple, get_origin, get_args
+from typing import Dict, List, Set, Tuple, get_args, get_origin
 
 import pytest
-
 from type_to_strategy import translate
 
 
