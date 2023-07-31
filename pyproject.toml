@@ -1,0 +1,10 @@
+[tool.ruff]
+select = ["F", "E", "W", "I"]  # pyflakes, pycodestyle (twice) and isort
+extend-exclude = ["venv*/", "build/"]
+# Below replaces isort
+fix = true
+unfixable = ["F", "E", "W"]
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ["venv*/", "build/"]
