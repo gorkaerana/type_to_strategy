@@ -1,0 +1,10 @@
+# Emacs stuff
+*~
+\#*
+
+# Python stuff
+__pycache__/
+*.egg-info
+venv*/
+build/
+.hypothesis/
