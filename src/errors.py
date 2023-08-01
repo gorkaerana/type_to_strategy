@@ -1,0 +1,2 @@
+class WrongAmountTypeArguments(Exception):
+    pass
