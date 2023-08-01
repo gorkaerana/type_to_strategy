@@ -8,3 +8,8 @@ unfixable = ["F", "E", "W"]
 [tool.mypy]
 ignore_missing_imports = true
 exclude = ["venv*/", "build/"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::hypothesis.errors.NonInteractiveExampleWarning",
+]
