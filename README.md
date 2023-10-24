@@ -1,3 +1,5 @@
+# `type_to_strategy`
+
 In short, `type_to_strategy` aims to improve the developer experience of using [`hypothesis`](https://github.com/HypothesisWorks/hypothesis), from
 
 ```python
@@ -18,3 +20,18 @@ from type_to_strategy import strategize
 def test_something(o):
     assert True
 ```
+
+## Supported types
+- [X] `bool`
+- [X] `bytes`
+- [X] `complex`
+- [X] `dict` (and `typing.Dict`)
+- [X] `float`
+- [ ] `frozenset`
+- [X] `int`
+- [X] `list` (and `typing.List`)
+- [X] `set` (and `typing.Set`)
+- [X] `str`
+- [X] `tuple` (and `typing.Tuple`)
+- [X] `types.UnionType`
+- [ ] `typing.Any`
