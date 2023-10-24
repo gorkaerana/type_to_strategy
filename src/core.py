@@ -1,8 +1,8 @@
+import sys
 from functools import reduce
 from operator import or_
 from random import randint
-from types import UnionType
-from typing import Dict, List, Set, Tuple, get_args, get_origin
+from typing import Dict, List, Set, Tuple, Type, Union, get_args, get_origin
 
 from hypothesis.strategies import (
     binary,
@@ -16,6 +16,18 @@ from hypothesis.strategies import (
     sets,
     tuples,
 )
+
+# Annoyingly, `typing.get_origin(str | int) == types.UnionType` after Python 3.10,
+# but `typing.get_origin(str | int) == typing.Union` before
+if sys.version_info >= (3, 10):
+    from types import UnionType
+    from typing import TypeAlias
+
+    UnionType_: TypeAlias = UnionType
+else:
+    from typing_extensions import TypeAlias
+
+    UnionType_: TypeAlias = Union
 
 
 def strategize(type_: type):
@@ -35,7 +47,7 @@ def strategize(type_: type):
             return integers()
         elif type_ == str:
             return characters()
-    elif origin == UnionType:
+    elif (origin == UnionType_) or (origin == Union):
         return reduce(or_, map(strategize, args))
     else:
         # TODO: assert `args` has correct length for each case
