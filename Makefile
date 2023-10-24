@@ -1,13 +1,13 @@
-black:
-	venv/bin/black .
+format:
+	venv/bin/ruff format .
 
-mypy:
+type_check:
 	venv/bin/mypy .
 
-ruff:
+lint:
 	venv/bin/ruff .
 
 test:
 	venv/bin/pytest -vv .
 
-tooling: black mypy ruff
+tooling: format type_check lint
