@@ -1,12 +1,24 @@
 from itertools import product, starmap
 from operator import or_
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set, Tuple, Union
+import sys
 
 import pytest
 from type_to_strategy.core import strategize
 
 SIMPLE_TYPES = [bool, bytes, complex, float, int, str]
 
+DICT_TYPES = [Dict]
+LIST_TYPES = [List]
+SET_TYPES = [Set]
+TUPLE_TYPES = [Tuple]
+
+if sys.version_info >= (3, 10):
+    DICT_TYPES.append(dict)
+    LIST_TYPES.append(list)
+    SET_TYPES.append(set)
+    TUPLE_TYPES.append(tuple)    
+                        
 
 @pytest.mark.parametrize("type_", SIMPLE_TYPES)
 def test_strategize_with_simple_types(type_):
@@ -14,7 +26,7 @@ def test_strategize_with_simple_types(type_):
 
 
 @pytest.mark.parametrize(
-    "dict_,key_type,value_type", list(product([dict, Dict], SIMPLE_TYPES, SIMPLE_TYPES))
+    "dict_,key_type,value_type", list(product(DICT_TYPES, SIMPLE_TYPES, SIMPLE_TYPES))
 )
 def test_strategize_with_dict(dict_, key_type, value_type):
     strategy = strategize(dict_[key_type, value_type])
@@ -24,7 +36,7 @@ def test_strategize_with_dict(dict_, key_type, value_type):
     assert isinstance(example, dict)
 
 
-@pytest.mark.parametrize("list_,value_type", product([list, List], SIMPLE_TYPES))
+@pytest.mark.parametrize("list_,value_type", product(LIST_TYPES, SIMPLE_TYPES))
 def test_strategize_with_list(list_, value_type):
     strategy = strategize(list_[value_type])
     example = strategy.example()
@@ -32,7 +44,7 @@ def test_strategize_with_list(list_, value_type):
     assert isinstance(example, list)
 
 
-@pytest.mark.parametrize("set_,value_type", product([set, Set], SIMPLE_TYPES))
+@pytest.mark.parametrize("set_,value_type", product(SET_TYPES, SIMPLE_TYPES))
 def test_strategize_with_set(set_, value_type):
     strategy = strategize(set_[value_type])
     example = strategy.example()
@@ -40,7 +52,7 @@ def test_strategize_with_set(set_, value_type):
     assert isinstance(example, set)
 
 
-@pytest.mark.parametrize("tuple_,value_type", product([tuple, Tuple], SIMPLE_TYPES))
+@pytest.mark.parametrize("tuple_,value_type", product(TUPLE_TYPES, SIMPLE_TYPES))
 def test_strategize_with_set_and_one_argument(tuple_, value_type):
     strategy = strategize(tuple_[value_type])
     example = strategy.example()
@@ -51,7 +63,7 @@ def test_strategize_with_set_and_one_argument(tuple_, value_type):
 
 @pytest.mark.parametrize(
     "tuple_,value_type1,value_type2",
-    product([tuple, Tuple], SIMPLE_TYPES, SIMPLE_TYPES),
+    product(TUPLE_TYPES, SIMPLE_TYPES, SIMPLE_TYPES),
 )
 def test_strategize_with_set_and_several_arguments(tuple_, value_type1, value_type2):
     strategy = strategize(tuple_[value_type1, value_type2])
@@ -63,7 +75,7 @@ def test_strategize_with_set_and_several_arguments(tuple_, value_type1, value_ty
 
 @pytest.mark.parametrize(
     "tuple_,value_type",
-    product([tuple, Tuple], SIMPLE_TYPES),
+    product(TUPLE_TYPES, SIMPLE_TYPES),
 )
 def test_strategize_with_set_and_ellipsis(tuple_, value_type):
     strategy = strategize(tuple_[value_type, ...])
@@ -75,10 +87,10 @@ def test_strategize_with_set_and_ellipsis(tuple_, value_type):
 
 # TODO: test with dicts, lists, etc.
 @pytest.mark.parametrize(
-    "type_", list(starmap(or_, product(SIMPLE_TYPES, SIMPLE_TYPES)))
+    "value_type1,value_type2", list(product(SIMPLE_TYPES, SIMPLE_TYPES))
 )
-def test_strategize_with_union_type(type_):
-    type_ = or_(str, int)
+def test_strategize_with_union_type(value_type1, value_type2):
+    type_ = Union[value_type1, value_type2]
     strategy = strategize(type_)
     example = strategy.example()
-    assert isinstance(example, type_)
+    assert any(isinstance(example, v) for v in [value_type1, value_type2])
