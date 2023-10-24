@@ -2,7 +2,7 @@ import sys
 from functools import reduce
 from operator import or_
 from random import randint
-from typing import Dict, List, Set, Tuple, Type, Union, get_args, get_origin
+from typing import Dict, List, Set, Tuple, Union, get_args, get_origin
 
 from hypothesis.strategies import (
     binary,

@@ -1,24 +1,23 @@
-from itertools import product, starmap
-from operator import or_
-from typing import Dict, List, Set, Tuple, Union
 import sys
+from itertools import product
+from typing import Any, Dict, List, Set, Tuple, Union
 
 import pytest
 from type_to_strategy.core import strategize
 
 SIMPLE_TYPES = [bool, bytes, complex, float, int, str]
 
-DICT_TYPES = [Dict]
-LIST_TYPES = [List]
-SET_TYPES = [Set]
-TUPLE_TYPES = [Tuple]
+DICT_TYPES: List[Any] = [Dict]
+LIST_TYPES: List[Any] = [List]
+SET_TYPES: List[Any] = [Set]
+TUPLE_TYPES: List[Any] = [Tuple]
 
 if sys.version_info >= (3, 10):
     DICT_TYPES.append(dict)
     LIST_TYPES.append(list)
     SET_TYPES.append(set)
-    TUPLE_TYPES.append(tuple)    
-                        
+    TUPLE_TYPES.append(tuple)
+
 
 @pytest.mark.parametrize("type_", SIMPLE_TYPES)
 def test_strategize_with_simple_types(type_):
