@@ -1,9 +1,18 @@
 [tool.ruff]
-select = ["F", "E", "W", "I"]  # pyflakes, pycodestyle (twice) and isort
 extend-exclude = ["venv*/", "build/"]
-# Below replaces isort
+# Below two lines replace isort
 fix = true
 unfixable = ["F", "E", "W"]
+
+[tool.ruff.lint]
+# pycodestyle, pyflakes, isort and pycodestyle, respectively
+select = ["E", "F", "I", "W"]  
+# Ignore "line-too-long" rule, formatter will take care of it
+ignore = ["E501", "W191"]  
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
 
 [tool.mypy]
 ignore_missing_imports = true

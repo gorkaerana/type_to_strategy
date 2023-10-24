@@ -1,5 +1,4 @@
 ipython
 ruff
-black
 mypy
 pytest
