@@ -3,7 +3,6 @@ from typing import Dict, List, Set, Tuple, get_args, get_origin
 import pytest
 from type_to_strategy import translate
 
-
 # TODO: how to test the first four only for Python > 3.8?
 composite_types = [
     # dict[str, str],

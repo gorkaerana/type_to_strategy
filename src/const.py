@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Callable, Dict, List, Set, Tuple
 
 from hypothesis.strategies import (
