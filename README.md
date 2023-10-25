@@ -32,6 +32,7 @@ def test_something(o):
 - [X] `int`
 - [X] `list`
 - [X] `set`
+- [X] `slice`
 - [X] `str`
 - [X] `tuple`
 - [X] `None`
@@ -57,9 +58,21 @@ def test_something(o):
 ### `datetime` types
 - [X] `date`
 - [X] `datetime`
+- [ ] `time`
+- [ ] `timedelta`
 
 ### `decimals` types
 - [X] `Decimal`
 
 ### `fractions` types
 - [X] `Fraction`
+
+### `uuid` types
+- [ ] `UUID`
+
+### `zoneinfo` types
+- [ ] `ZoneInfo`
+
+### Various dataclasses
+- [ ] `attrs`
+- [ ] `dataclasses`
