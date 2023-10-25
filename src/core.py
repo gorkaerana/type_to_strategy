@@ -1,4 +1,6 @@
 import sys
+from collections.abc import Iterable
+from datetime import date, datetime
 from decimal import Decimal
 from fractions import Fraction
 from functools import reduce
@@ -13,12 +15,15 @@ from hypothesis.strategies import (
     booleans,
     characters,
     complex_numbers,
+    dates,
+    datetimes,
     decimals,
     dictionaries,
     floats,
     fractions,
     frozensets,
     integers,
+    iterables,
     lists,
     none,
     sets,
@@ -42,7 +47,7 @@ def translate(type_: type):
     """ """
     origin, args = get_origin(type_), get_args(type_)
     if origin is None:
-        # Translate class to strategy
+        # Base case: the following types cannot have arguments
         if type_ is bool:
             return booleans()
         elif type_ is bytes:
@@ -61,11 +66,14 @@ def translate(type_: type):
             return fractions()
         elif type_ is Decimal:
             return decimals()
+        elif type_ is datetime:
+            return datetimes()
+        elif type_ is date:
+            return dates()
     elif (origin == UnionType_) or (origin == Union):
         return reduce(or_, map(translate, args))
     else:
         first_arg, *_ = args
-        # TODO: assert `args` has correct length for each case
         if (origin is dict) or (origin is Dict):
             return dictionaries(*map(translate, args))
         elif (origin is frozenset) or (origin is FrozenSet):
@@ -81,6 +89,8 @@ def translate(type_: type):
             if (len(args) == 2) and (args[1] is ...):
                 return tuples(*map(translate, repeat(first_arg, randint(1, 10))))
             return tuples(*map(translate, args))
+        elif origin is Iterable:
+            return iterables(translate(first_arg))
 
 
 def strategize(type_: type):

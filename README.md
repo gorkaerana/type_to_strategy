@@ -1,6 +1,6 @@
 # `type_to_strategy`
 
-In short, `type_to_strategy` aims to improve the developer experience of using [`hypothesis`](https://github.com/HypothesisWorks/hypothesis), from
+nnIn short, `type_to_strategy` aims to improve the developer experience of using [`hypothesis`](https://github.com/HypothesisWorks/hypothesis), from
 
 ```python
 from hypothesis import given
@@ -42,7 +42,7 @@ def test_something(o):
 - [X] `Dict`
 - [X] `FrozenSet`
 - [ ] `Generator`
-- [ ] `Iterable`
+- [X] `Iterable`
 - [ ] `Iterator`
 - [X] `List`
 - [ ] `Mapping`
@@ -53,6 +53,10 @@ def test_something(o):
 - [X] `Set`
 - [X] `Tuple`
 - [X] `UnionType`
+
+### `datetime` types
+- [X] `date`
+- [X] `datetime`
 
 ### `decimals` types
 - [X] `Decimal`

@@ -1,14 +1,17 @@
 import sys
+from collections.abc import Iterable as AbcIterable
+from datetime import date, datetime
 from decimal import Decimal
 from fractions import Fraction
 from itertools import product
-from typing import Any, Dict, FrozenSet, List, Set, Tuple, Union
+from typing import Any, Dict, FrozenSet, Iterable, List, Set, Tuple, Union
 
 import pytest
+from hypothesis.strategies._internal.core import PrettyIter
 from type_to_strategy.core import translate
 
 # `hash(Decimal("sNaN"))` results in `TypeError: Cannot hash a signaling NaN value`
-HASHABLE_TYPES = [bool, bytes, complex, float, int, str, Fraction]
+HASHABLE_TYPES = [bool, bytes, complex, date, datetime, float, int, str, Fraction]
 SIMPLE_TYPES = HASHABLE_TYPES + [Decimal]
 
 DICT_TYPES: List[Any] = [Dict]
@@ -16,6 +19,7 @@ FROZENSET_TYPES: List[Any] = [FrozenSet]
 LIST_TYPES: List[Any] = [List]
 SET_TYPES: List[Any] = [Set]
 TUPLE_TYPES: List[Any] = [Tuple]
+ITERABLE_TYPES: List[Any] = [Iterable, AbcIterable]
 
 if sys.version_info >= (3, 10):
     DICT_TYPES.append(dict)
@@ -95,3 +99,14 @@ def test_translate_with_union_type(value_type1, value_type2):
     strategy = translate(type_)
     example = strategy.example()
     assert any(thorough_isinstance(example, v) for v in [value_type1, value_type2])
+
+
+@pytest.mark.parametrize(
+    "iterable_,value_type",
+    product(ITERABLE_TYPES, SIMPLE_TYPES),
+)
+def test_translate_with_iterable(iterable_, value_type):
+    strategy = translate(iterable_[value_type])
+    example = strategy.example()
+    assert all(thorough_isinstance(v, value_type) for v in example)
+    assert thorough_isinstance(example, PrettyIter)
