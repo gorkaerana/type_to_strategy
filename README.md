@@ -22,16 +22,34 @@ def test_something(o):
 ```
 
 ## Supported types
+### Built-in types
 - [X] `bool`
 - [X] `bytes`
 - [X] `complex`
-- [X] `dict` (and `typing.Dict`)
+- [X] `dict`
 - [X] `float`
 - [ ] `frozenset`
 - [X] `int`
-- [X] `list` (and `typing.List`)
-- [X] `set` (and `typing.Set`)
+- [X] `list`
+- [X] `set`
 - [X] `str`
-- [X] `tuple` (and `typing.Tuple`)
-- [X] `types.UnionType`
+- [X] `tuple`
+- [ ] `None`
+
+### `typing` types
 - [ ] `typing.Any`
+- [ ] `typing.Callable`
+- [X] `typing.Dict`
+- [ ] `typing.FrozenSet`
+- [ ] `typing.Generator`
+- [ ] `typing.Iterable`
+- [ ] `typing.Iterator`
+- [X] `typing.List`
+- [ ] `typing.Mapping`
+- [ ] `MutableMapping`
+- [ ] `MutableSequence`
+- [ ] `MutableSet`
+- [X] `typing.Set`
+- [X] `typing.Tuple`
+- [X] `types.UnionType`
+
