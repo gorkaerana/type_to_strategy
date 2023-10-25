@@ -1,5 +1,6 @@
 import sys
 from functools import reduce
+from itertools import repeat
 from operator import or_
 from random import randint
 from typing import Dict, List, Set, Tuple, Union, get_args, get_origin
@@ -51,19 +52,20 @@ def translate(type_: type):
     elif (origin == UnionType_) or (origin == Union):
         return reduce(or_, map(translate, args))
     else:
+        first_arg, *_ = args
         # TODO: assert `args` has correct length for each case
         if (origin == dict) or (origin == Dict):
             return dictionaries(*map(translate, args))
         elif (origin == list) or (origin == List):
-            return lists(translate(args[0]))
+            return lists(translate(first_arg))
         elif (origin == set) or (origin == Set):
-            return sets(translate(args[0]))
+            return sets(translate(first_arg))
         elif (origin == tuple) or (origin == Tuple):
             # As per https://docs.python.org/3/library/typing.html#annotating-tuples
             # if two arguments are provided the second one being `Ellipsis`
             # it is a tuple of varying length
-            if (len(args) == 2) and (args[-1] == ...):
-                return tuples(*map(translate, (args[0] for _ in range(randint(1, 10)))))
+            if (len(args) == 2) and (args[1] == ...):
+                return tuples(*map(translate, repeat(first_arg, randint(1, 10))))
             return tuples(*map(translate, args))
 
 
