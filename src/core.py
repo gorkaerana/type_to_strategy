@@ -4,6 +4,7 @@ from operator import or_
 from random import randint
 from typing import Dict, List, Set, Tuple, Union, get_args, get_origin
 
+from hypothesis import given
 from hypothesis.strategies import (
     binary,
     booleans,
@@ -30,7 +31,7 @@ else:
     UnionType_: TypeAlias = Union
 
 
-def strategize(type_: type):
+def translate(type_: type):
     """ """
     origin, args = get_origin(type_), get_args(type_)
     if origin is None:
@@ -48,21 +49,23 @@ def strategize(type_: type):
         elif type_ == str:
             return characters()
     elif (origin == UnionType_) or (origin == Union):
-        return reduce(or_, map(strategize, args))
+        return reduce(or_, map(translate, args))
     else:
         # TODO: assert `args` has correct length for each case
         if (origin == dict) or (origin == Dict):
-            return dictionaries(*map(strategize, args))
+            return dictionaries(*map(translate, args))
         elif (origin == list) or (origin == List):
-            return lists(strategize(args[0]))
+            return lists(translate(args[0]))
         elif (origin == set) or (origin == Set):
-            return sets(strategize(args[0]))
+            return sets(translate(args[0]))
         elif (origin == tuple) or (origin == Tuple):
             # As per https://docs.python.org/3/library/typing.html#annotating-tuples
             # if two arguments are provided the second one being `Ellipsis`
             # it is a tuple of varying length
             if (len(args) == 2) and (args[-1] == ...):
-                return tuples(
-                    *map(strategize, (args[0] for _ in range(randint(1, 10))))
-                )
-            return tuples(*map(strategize, args))
+                return tuples(*map(translate, (args[0] for _ in range(randint(1, 10)))))
+            return tuples(*map(translate, args))
+
+
+def strategize(type_: type):
+    return given(translate(type_))
