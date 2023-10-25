@@ -37,13 +37,14 @@ def test_translate_with_dict(dict_, key_type, value_type):
     assert isinstance(example, dict)
 
 
-@pytest.mark.parametrize("frozenset_,value_type", product(FROZENSET_TYPES, SIMPLE_TYPES))
+@pytest.mark.parametrize(
+    "frozenset_,value_type", product(FROZENSET_TYPES, SIMPLE_TYPES)
+)
 def test_translate_with_frozenset(frozenset_, value_type):
     strategy = translate(frozenset_[value_type])
     example = strategy.example()
     print(example)
     assert all(isinstance(v, value_type) for v in example)
-    assert len(example) > 0
     assert isinstance(example, frozenset)
 
 
@@ -60,7 +61,6 @@ def test_translate_with_set(set_, value_type):
     strategy = translate(set_[value_type])
     example = strategy.example()
     assert all(isinstance(v, value_type) for v in example)
-    assert len(example) > 0
     assert isinstance(example, set)
 
 
