@@ -8,6 +8,6 @@ lint:
 	venv/bin/ruff .
 
 test:
-	venv/bin/pytest -vv .
+	venv/bin/pytest -vv tests/
 
 tooling: format type_check lint
