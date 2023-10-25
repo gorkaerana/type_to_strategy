@@ -3,7 +3,7 @@ from functools import reduce
 from itertools import repeat
 from operator import or_
 from random import randint
-from typing import Dict, List, Set, Tuple, Union, get_args, get_origin
+from typing import Dict, FrozenSet, List, Set, Tuple, Union, get_args, get_origin
 
 from hypothesis import given
 from hypothesis.strategies import (
@@ -13,6 +13,7 @@ from hypothesis.strategies import (
     complex_numbers,
     dictionaries,
     floats,
+    frozensets,
     integers,
     lists,
     sets,
@@ -56,6 +57,8 @@ def translate(type_: type):
         # TODO: assert `args` has correct length for each case
         if (origin == dict) or (origin == Dict):
             return dictionaries(*map(translate, args))
+        elif (origin == frozenset) or (origin == FrozenSet):
+            return frozensets(translate(first_arg))
         elif (origin == list) or (origin == List):
             return lists(translate(first_arg))
         elif (origin == set) or (origin == Set):

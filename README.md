@@ -28,7 +28,7 @@ def test_something(o):
 - [X] `complex`
 - [X] `dict`
 - [X] `float`
-- [ ] `frozenset`
+- [X] `frozenset`
 - [X] `int`
 - [X] `list`
 - [X] `set`
@@ -40,7 +40,7 @@ def test_something(o):
 - [ ] `Any`
 - [ ] `Callable`
 - [X] `Dict`
-- [ ] `FrozenSet`
+- [X] `FrozenSet`
 - [ ] `Generator`
 - [ ] `Iterable`
 - [ ] `Iterator`
