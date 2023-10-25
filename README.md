@@ -53,3 +53,9 @@ def test_something(o):
 - [X] `Set`
 - [X] `Tuple`
 - [X] `UnionType`
+
+### `decimals` types
+- [X] `Decimal`
+
+### `fractions` types
+- [X] `Fraction`

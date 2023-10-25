@@ -1,4 +1,6 @@
 import sys
+from decimal import Decimal
+from fractions import Fraction
 from functools import reduce
 from itertools import repeat
 from operator import or_
@@ -11,8 +13,10 @@ from hypothesis.strategies import (
     booleans,
     characters,
     complex_numbers,
+    decimals,
     dictionaries,
     floats,
+    fractions,
     frozensets,
     integers,
     lists,
@@ -53,6 +57,10 @@ def translate(type_: type):
             return characters()
         elif type_ is None:
             return none()
+        elif type_ is Fraction:
+            return fractions()
+        elif type_ is Decimal:
+            return decimals()
     elif (origin == UnionType_) or (origin == Union):
         return reduce(or_, map(translate, args))
     else:

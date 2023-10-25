@@ -1,11 +1,15 @@
 import sys
+from decimal import Decimal
+from fractions import Fraction
 from itertools import product
 from typing import Any, Dict, FrozenSet, List, Set, Tuple, Union
 
 import pytest
 from type_to_strategy.core import translate
 
-SIMPLE_TYPES = [bool, bytes, complex, float, int, str]
+# `hash(Decimal("sNaN"))` results in `TypeError: Cannot hash a signaling NaN value`
+HASHABLE_TYPES = [bool, bytes, complex, float, int, str, Fraction]
+SIMPLE_TYPES = HASHABLE_TYPES + [Decimal]
 
 DICT_TYPES: List[Any] = [Dict]
 FROZENSET_TYPES: List[Any] = [FrozenSet]
@@ -32,18 +36,19 @@ def test_translate_with_simple_types(type_):
 
 
 @pytest.mark.parametrize(
-    "dict_,key_type,value_type", list(product(DICT_TYPES, SIMPLE_TYPES, SIMPLE_TYPES))
+    "dict_,key_type,value_type", list(product(DICT_TYPES, HASHABLE_TYPES, SIMPLE_TYPES))
 )
 def test_translate_with_dict(dict_, key_type, value_type):
     strategy = translate(dict_[key_type, value_type])
     example = strategy.example()
+    print(example)
     assert all(thorough_isinstance(k, key_type) for k in example.keys())
     assert all(thorough_isinstance(v, value_type) for v in example.values())
     assert thorough_isinstance(example, dict)
 
 
 @pytest.mark.parametrize(
-    "frozenset_,value_type", product(FROZENSET_TYPES, SIMPLE_TYPES)
+    "frozenset_,value_type", product(FROZENSET_TYPES, HASHABLE_TYPES)
 )
 def test_translate_with_frozenset(frozenset_, value_type):
     strategy = translate(frozenset_[value_type])
@@ -61,7 +66,7 @@ def test_translate_with_list(list_, value_type):
     assert thorough_isinstance(example, list)
 
 
-@pytest.mark.parametrize("set_,value_type", product(SET_TYPES, SIMPLE_TYPES))
+@pytest.mark.parametrize("set_,value_type", product(SET_TYPES, HASHABLE_TYPES))
 def test_translate_with_set(set_, value_type):
     strategy = translate(set_[value_type])
     example = strategy.example()
