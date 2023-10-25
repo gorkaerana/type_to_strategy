@@ -16,6 +16,7 @@ from hypothesis.strategies import (
     frozensets,
     integers,
     lists,
+    none,
     sets,
     tuples,
 )
@@ -50,6 +51,8 @@ def translate(type_: type):
             return integers()
         elif type_ is str:
             return characters()
+        elif type_ is None:
+            return none()
     elif (origin == UnionType_) or (origin == Union):
         return reduce(or_, map(translate, args))
     else:
