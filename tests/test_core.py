@@ -1,6 +1,6 @@
 import sys
 from itertools import product
-from typing import Any, Dict, List, Set, Tuple, Union
+from typing import Any, Dict, FrozenSet, List, Set, Tuple, Union
 
 import pytest
 from type_to_strategy.core import translate
@@ -8,12 +8,14 @@ from type_to_strategy.core import translate
 SIMPLE_TYPES = [bool, bytes, complex, float, int, str]
 
 DICT_TYPES: List[Any] = [Dict]
+FROZENSET_TYPES: List[Any] = [FrozenSet]
 LIST_TYPES: List[Any] = [List]
 SET_TYPES: List[Any] = [Set]
 TUPLE_TYPES: List[Any] = [Tuple]
 
 if sys.version_info >= (3, 10):
     DICT_TYPES.append(dict)
+    FROZENSET_TYPES.append(frozenset)
     LIST_TYPES.append(list)
     SET_TYPES.append(set)
     TUPLE_TYPES.append(tuple)
@@ -35,6 +37,16 @@ def test_translate_with_dict(dict_, key_type, value_type):
     assert isinstance(example, dict)
 
 
+@pytest.mark.parametrize("frozenset_,value_type", product(FROZENSET_TYPES, SIMPLE_TYPES))
+def test_translate_with_frozenset(frozenset_, value_type):
+    strategy = translate(frozenset_[value_type])
+    example = strategy.example()
+    print(example)
+    assert all(isinstance(v, value_type) for v in example)
+    assert len(example) > 0
+    assert isinstance(example, frozenset)
+
+
 @pytest.mark.parametrize("list_,value_type", product(LIST_TYPES, SIMPLE_TYPES))
 def test_translate_with_list(list_, value_type):
     strategy = translate(list_[value_type])
@@ -48,28 +60,8 @@ def test_translate_with_set(set_, value_type):
     strategy = translate(set_[value_type])
     example = strategy.example()
     assert all(isinstance(v, value_type) for v in example)
+    assert len(example) > 0
     assert isinstance(example, set)
-
-
-@pytest.mark.parametrize("tuple_,value_type", product(TUPLE_TYPES, SIMPLE_TYPES))
-def test_translate_with_set_and_one_argument(tuple_, value_type):
-    strategy = translate(tuple_[value_type])
-    example = strategy.example()
-    assert isinstance(example[0], value_type)
-    assert len(example) == 1
-    assert isinstance(example, tuple)
-
-
-@pytest.mark.parametrize(
-    "tuple_,value_type1,value_type2",
-    product(TUPLE_TYPES, SIMPLE_TYPES, SIMPLE_TYPES),
-)
-def test_translate_with_set_and_several_arguments(tuple_, value_type1, value_type2):
-    strategy = translate(tuple_[value_type1, value_type2])
-    example = strategy.example()
-    assert isinstance(example[0], value_type1) and isinstance(example[1], value_type2)
-    assert len(example) == 2
-    assert isinstance(example, tuple)
 
 
 @pytest.mark.parametrize(
