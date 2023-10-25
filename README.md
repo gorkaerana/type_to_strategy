@@ -37,19 +37,19 @@ def test_something(o):
 - [ ] `None`
 
 ### `typing` types
-- [ ] `typing.Any`
-- [ ] `typing.Callable`
-- [X] `typing.Dict`
-- [ ] `typing.FrozenSet`
-- [ ] `typing.Generator`
-- [ ] `typing.Iterable`
-- [ ] `typing.Iterator`
-- [X] `typing.List`
-- [ ] `typing.Mapping`
+- [ ] `Any`
+- [ ] `Callable`
+- [X] `Dict`
+- [ ] `FrozenSet`
+- [ ] `Generator`
+- [ ] `Iterable`
+- [ ] `Iterator`
+- [X] `List`
+- [ ] `Mapping`
 - [ ] `MutableMapping`
 - [ ] `MutableSequence`
 - [ ] `MutableSet`
-- [X] `typing.Set`
-- [X] `typing.Tuple`
-- [X] `types.UnionType`
+- [X] `Set`
+- [X] `Tuple`
+- [X] `UnionType`
 
