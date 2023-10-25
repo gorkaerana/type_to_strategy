@@ -34,7 +34,7 @@ def test_something(o):
 - [X] `set`
 - [X] `str`
 - [X] `tuple`
-- [ ] `None`
+- [X] `None`
 
 ### `typing` types
 - [ ] `Any`
@@ -49,7 +49,7 @@ def test_something(o):
 - [ ] `MutableMapping`
 - [ ] `MutableSequence`
 - [ ] `MutableSet`
+- [X] `Optional`
 - [X] `Set`
 - [X] `Tuple`
 - [X] `UnionType`
-
