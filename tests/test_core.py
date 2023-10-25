@@ -12,7 +12,7 @@ from type_to_strategy.core import translate
 
 # `hash(Decimal("sNaN"))` results in `TypeError: Cannot hash a signaling NaN value`
 HASHABLE_TYPES = [bool, bytes, complex, date, datetime, float, int, str, Fraction]
-SIMPLE_TYPES = HASHABLE_TYPES + [Decimal]
+SIMPLE_TYPES = HASHABLE_TYPES + [Decimal, slice]
 
 DICT_TYPES: List[Any] = [Dict]
 FROZENSET_TYPES: List[Any] = [FrozenSet]

@@ -27,6 +27,7 @@ from hypothesis.strategies import (
     lists,
     none,
     sets,
+    slices,
     tuples,
 )
 
@@ -45,6 +46,7 @@ else:
 
 def translate(type_: type):
     """ """
+    randint_ = randint(1, 10)
     origin, args = get_origin(type_), get_args(type_)
     if origin is None:
         # Base case: the following types cannot have arguments
@@ -58,6 +60,8 @@ def translate(type_: type):
             return floats()
         elif type_ is int:
             return integers()
+        elif type_ is slice:
+            return slices(randint_)
         elif type_ is str:
             return characters()
         elif type_ is None:
@@ -87,7 +91,7 @@ def translate(type_: type):
             # if two arguments are provided, the second one being `Ellipsis`,
             # it is a tuple of varying length
             if (len(args) == 2) and (args[1] is ...):
-                return tuples(*map(translate, repeat(first_arg, randint(1, 10))))
+                return tuples(*map(translate, repeat(first_arg, randint_)))
             return tuples(*map(translate, args))
         elif origin is Iterable:
             return iterables(translate(first_arg))
