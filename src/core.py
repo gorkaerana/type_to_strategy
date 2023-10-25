@@ -38,36 +38,36 @@ def translate(type_: type):
     origin, args = get_origin(type_), get_args(type_)
     if origin is None:
         # Translate class to strategy
-        if type_ == bool:
+        if type_ is bool:
             return booleans()
-        elif type_ == bytes:
+        elif type_ is bytes:
             return binary()
-        elif type_ == complex:
+        elif type_ is complex:
             return complex_numbers()
-        elif type_ == float:
+        elif type_ is float:
             return floats()
-        elif type_ == int:
+        elif type_ is int:
             return integers()
-        elif type_ == str:
+        elif type_ is str:
             return characters()
     elif (origin == UnionType_) or (origin == Union):
         return reduce(or_, map(translate, args))
     else:
         first_arg, *_ = args
         # TODO: assert `args` has correct length for each case
-        if (origin == dict) or (origin == Dict):
+        if (origin is dict) or (origin is Dict):
             return dictionaries(*map(translate, args))
-        elif (origin == frozenset) or (origin == FrozenSet):
+        elif (origin is frozenset) or (origin is FrozenSet):
             return frozensets(translate(first_arg))
-        elif (origin == list) or (origin == List):
+        elif (origin is list) or (origin is List):
             return lists(translate(first_arg))
-        elif (origin == set) or (origin == Set):
+        elif (origin is set) or (origin is Set):
             return sets(translate(first_arg))
-        elif (origin == tuple) or (origin == Tuple):
+        elif (origin is tuple) or (origin is Tuple):
             # As per https://docs.python.org/3/library/typing.html#annotating-tuples
-            # if two arguments are provided the second one being `Ellipsis`
+            # if two arguments are provided, the second one being `Ellipsis`,
             # it is a tuple of varying length
-            if (len(args) == 2) and (args[1] == ...):
+            if (len(args) == 2) and (args[1] is ...):
                 return tuples(*map(translate, repeat(first_arg, randint(1, 10))))
             return tuples(*map(translate, args))
 
