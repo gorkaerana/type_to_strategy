@@ -1,14 +1,14 @@
 # `type_to_strategy`
 
-nnIn short, `type_to_strategy` aims to improve the developer experience of using [`hypothesis`](https://github.com/HypothesisWorks/hypothesis), from
+In short, `type_to_strategy` aims to improve the developer experience of using [`hypothesis`](https://github.com/HypothesisWorks/hypothesis), from
 
 ```python
 from hypothesis import given
 from hypothesis.strategies import integers, text
 
 @given(text() | integers())
-def test_something(o):
-    assert True
+def test_something(value):
+    assert str(value) > 5
 ```
 
 to
@@ -17,9 +17,11 @@ to
 from type_to_strategy import strategize
 
 @strategize(str | int)
-def test_something(o):
-    assert True
+def test_something(value):
+    assert str(value) > 5
 ```
+
+This is indeed a different implementation of `hypothesis.strategies.from_type`. Nonetheless, it works better with some Python types (`typing.Mapping`, `typing.Iterable`, `collections.abc.Iterable`, etc.), so the idea is to implement those here and then upstream them to `hypothesis`.
 
 ## Supported types
 ### Built-in types
