@@ -19,8 +19,10 @@ FROZENSET_TYPES: List[Any] = [FrozenSet]
 LIST_TYPES: List[Any] = [List]
 SET_TYPES: List[Any] = [Set]
 TUPLE_TYPES: List[Any] = [Tuple]
-ITERABLE_TYPES: List[Any] = [Iterable, AbcIterable]
+ITERABLE_TYPES: List[Any] = [Iterable]
 
+if sys.version_info >= (3, 9):
+    ITERABLE_TYPES.append(AbcIterable)
 if sys.version_info >= (3, 10):
     DICT_TYPES.append(dict)
     FROZENSET_TYPES.append(frozenset)
